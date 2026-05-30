@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Diary in Frames | Portfolio</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;700&family=Syne:wght@500;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- PREMIUM COLOR PALETTE & RESET --- */
+        :root {
+            --bg-deep: #0a0b10;
+            --bg-surface: #12141d;
+            --accent: #d4af37; /* Elegant Muted Gold tint */
+            --text-main: #e2e8f0;
+            --text-muted: #8a99ad;
+            --glass-bg: rgba(18, 20, 29, 0.5);
+            --glass-border: rgba(212, 175, 55, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+
+        body {
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-deep);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 10px;
+        }
+
+        /* --- GLOBAL TYPOGRAPHY & LAYOUTS --- */
+        h1, h2, h3, .font-syne {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+        }
+
+        section {
+            position: relative;
+            padding: 100px 5% ;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            margin-bottom: 50px;
+            text-align: center;
+            background: linear-gradient(135deg, var(--text-main) 30%, var(--text-muted));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            width: 100%;
+        }
+
+        /* --- GLASSMORPHISM MIXIN UTILITY --- */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+        }
+
+        /* --- NAVIGATION BAR --- */
+        nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1200px;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .logo {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            color: var(--text-main);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .nav-location {
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* --- HERO SECTION (CINEMATIC FULLSCREEN) --- */
+        #hero {
+            padding: 0;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .hero-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.35) contrast(1.1);
+            transform: scale(1.05);
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 800px;
+            padding: 0 20px;
+            transform: translateY(30px);
+            opacity: 0;
+            animation: heroFadeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.3s;
+        }
+
+        @keyframes heroFadeUp {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .hero-content h1 {
+            font-size: clamp(2.5rem, 8vw, 5.5rem);
+            line-height: 1;
+            letter-spacing: -2px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .hero-content p {
+            font-size: clamp(1rem, 2.5vw, 1.4rem);
+            color: var(--text-muted);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            font-weight: 300;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 50px;
+            background: linear-gradient(to bottom, var(--accent), transparent);
+            animation: scrollDrop 2s infinite ease-in-out;
+        }
+
+        @keyframes scrollDrop {
+            0% { transform: scaleY(0); transform-origin: top; }
+            50% { transform: scaleY(1); transform-origin: top; }
+            51% { transform: scaleY(1); transform-origin: bottom; }
+            100% { transform: scaleY(0); transform-origin: bottom; }
+        }
+
+        /* --- CORE SERVICES SECTION ("WHAT I DO") --- */
+        #services {
+            background-color: var(--bg-deep);
+        }
+
+        .services-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .service-card {
+            padding: 50px 30px;
+            text-align: center;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent);
+        }
+
+        .service-card i {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .service-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* --- GALLERY SECTION (RESPONSIVE NO-CROP) --- */
+        #gallery {
+            background-color: var(--bg-surface);
+        }
+
+        .gallery-grid {
+            columns: 3 320px;
+            column-gap: 25px;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .gallery-item {
+            break-inside: avoid;
+            margin-bottom: 25px;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            background: var(--bg-deep);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            cursor: pointer;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s;
+            filter: grayscale(20%) brightness(0.9);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.04);
+            filter: grayscale(0%) brightness(1);
+        }
+
+        /* --- QUOTES SECTION --- */
+        #quotes {
+            background-color: var(--bg-deep);
+        }
+
+        .quotes-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .quote-card {
+            padding: 40px 30px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .quote-card p {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            font-style: italic;
+            color: var(--text-main);
+            margin-bottom: 25px;
+        }
+
+        .quote-card span {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent);
+        }
+
+        /* --- SOCIALS / COLLABORATION SECTION --- */
+        #connect {
+            background: linear-gradient(180deg, var(--bg-surface), var(--bg-deep));
+            text-align: center;
+        }
+
+        .connect-box {
+            max-width: 700px;
+            width: 100%;
+            padding: 60px 40px;
+        }
+
+        .connect-box h2 {
+            margin-bottom: 15px;
+        }
+
+        .connect-box p {
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            font-size: 1.1rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .social-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 28px;
+            border-radius: 50px;
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid var(--glass-border);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .social-btn:hover {
+            background: var(--text-main);
+            color: var(--bg-deep);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        /* --- APPLE-STYLE SCROLL ANIMATION EFFECTS --- */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .scroll-reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- MOBILE LAYOUT FIXES (BUG-FREE GUARANTEE) --- */
+        @media (max-width: 768px) {
+            section {
+                padding: 80px 6%;
+            }
+            
+            nav {
+                top: 15px;
+                padding: 12px 20px;
+            }
+
+            .gallery-grid {
+                columns: 1 100%;
+                column-gap: 0;
+            }
+
+            .gallery-item {
+                margin-bottom: 20px;
+            }
+
+            .connect-box {
+                padding: 40px 20px;
+            }
+
+            .social-links {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .social-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="glass-card">
+        <a href="#" class="logo">DIARY IN <span>FRAMES</span></a>
+        <div class="nav-location">
+            <i class="fa-solid fa-location-dot"></i> Kolkata, IN
+        </div>
+    </nav>
+
+    <section id="hero">
+        <div class="hero-bg">
+            <img src="mountain-night.png" alt="Cinematic Mountain Background">
+        </div>
+        <div class="hero-content">
+            <h1>Visual Stories</h1>
+            <p>Captured in Time</p>
+        </div>
+        <div class="scroll-indicator">
+            <span>Explore Portfolio</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <section id="services">
+        <h2 class="section-title scroll-reveal">Creative Expertise</h2>
+        <div class="services-container">
+            <div class="service-card glass-card scroll-reveal">
+                <i class="fa-solid fa-camera"></i>
+                <h3>Photography</h3>
+                <p>Framing raw realities, expressions, and breathtaking perspectives with precision light composition.</p>
+            </div>
+            <div class="service-card glass-card scroll-reveal">
+                <i class="fa-solid fa-video"></i>
+                <h3>Videography</h3>
+                <p>Creating immersive, high-resolution short films and dynamic modern content layouts.</p>
+            </div>
+            <div class="service-card glass-card scroll-reveal">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                <h3>Post-Processing</h3>
+                <p>Advanced color correction and grading to invoke unique mood shifts and cinematic fidelity.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="gallery">
+        <h2 class="section-title scroll-reveal">Curated Gallery</h2>
+        <div class="gallery-grid scroll-reveal">
+            
+            <div class="gallery-item">
+                <img src="InShot_20260522_125043105.jpg" alt="Vibrant Valley Overview">
+            </div>
+            
+            <div class="gallery-item">
+                <img src="InShot_20260525_113635932.jpg" alt="Mystic Foggy Roadway">
+            </div>
+            
+            <div class="gallery-item">
+                <img src="IMG_20260510_122606.png" alt="Rainy Street Ride Reflection">
+            </div>
+            
+            <div class="gallery-item">
+                <img src="file_00000000e6e8720789ec4c9a025610e2.png" alt="Colorful Buddhist Prayer Flags Vertical">
+            </div>
+            
+            <div class="gallery-item">
+                <img src="file_0000000090cc72069d598728e65628a7.png" alt="Peace Pagoda Stupa Fog Cover">
+            </div>
+            
+            <div class="gallery-item">
+                <img src="file_00000000d930720891f74f9f44088538.png" alt="Street Walk candid lifestyle">
+            </div>
+
+            <div class="gallery-item">
+                <img src="prayer-flags.png" alt="Forest line prayer flags hanging">
+            </div>
+
+        </div>
+    </section>
+
+    <section id="quotes">
+        <h2 class="section-title scroll-reveal">Philosophy of Sight</h2>
+        <div class="quotes-container">
+            <div class="quote-card glass-card scroll-reveal">
+                <p>"Your first 10,000 photographs are your worst."</p>
+                <span>— Henri Cartier-Bresson</span>
+            </div>
+            <div class="quote-card glass-card scroll-reveal">
+                <p>"You don't take a photograph, you make it."</p>
+                <span>— Ansel Adams</span>
+            </div>
+            <div class="quote-card glass-card scroll-reveal">
+                <p>"If your pictures aren't good enough, you aren't close enough."</p>
+                <span>— Robert Capa</span>
+            </div>
+            <div class="quote-card glass-card scroll-reveal">
+                <p>"Photography is the story I fail to put into words."</p>
+                <span>— Destin Sparks</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="connect">
+        <div class="connect-box glass-card scroll-reveal">
+            <h2 class="font-syne" style="font-size: clamp(1.8rem, 4vw, 2.8rem); text-transform: uppercase; margin-bottom: 15px;">Let's Collaborate</h2>
+            <p>Open for projects, short films, visual productions, and campaigns worldwide.</p>
+            
+            <div class="social-links">
+                <a href="https://instagram.com/" target="_blank" class="social-btn">
+                    <i class="fa-brands fa-instagram"></i> Instagram
+                </a>
+                <a href="mailto:your-email@gmail.com" class="social-btn">
+                    <i class="fa-solid fa-envelope"></i> DM For Collaborations
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Smoothly reveal sections and items as you scroll down
+            const revealElements = document.querySelectorAll('.scroll-reveal');
+            
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: "0px 0px -40px 0px" // Triggers slightly before element enters view
+            });
+
+            revealElements.forEach(element => {
+                revealObserver.observe(element);
+            });
+
+            // Parallax Hero Effect
+            const heroImage = document.querySelector('.hero-bg img');
+            window.addEventListener('scroll', () => {
+                let scrollValue = window.scrollY;
+                if (scrollValue < window.innerHeight) {
+                    heroImage.style.transform = `scale(${1.05 + scrollValue * 0.0002}) translateY(${scrollValue * 0.15}px)`;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
